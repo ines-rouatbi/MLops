@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Prediction</title>
+    <script>
+        async function sendPrediction() {
+            const featuresInput = document.getElementById("features").value;
+            const featuresArray = featuresInput.split(",").map(Number);
+            
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ features: featuresArray })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText = "Prediction: " + JSON.stringify(data);
+        }
+    </script>
+</head>
+<body>
+    <h1>FastAPI Prediction Service</h1>
+    <form onsubmit="event.preventDefault(); sendPrediction();">
+        <label for="features">Enter 68 comma-separated values:</label><br>
+        <input type="text" id="features" name="features" placeholder="e.g., 0.5, 1.2, 3.4, ..." required>
+        <button type="submit">Predict</button>
+    </form>
+    <h2 id="result"></h2>
+</body>
+</html>
+
